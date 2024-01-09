@@ -5,7 +5,7 @@
   tasks:
 
 
-  - name: install apache and php packages for Ubuntu Servers
+  - name: install apache2 and libapache2-mod-php packages
     apt:
       name: 
         - apache2
@@ -14,13 +14,13 @@
       update_cache: yes
     when: ansible_distribution in ["Debian", "Ubuntu"]
 
-  - name: install httpd and php packages for Red Hat Servers
+  - name: install httpd and php packages
     dnf:
       name: 
         - httpd
         - php
       state: latest
       update_cache: yes
-    when: ansible_distribution in ["CentOS", "Fedore Linux"]
+    when: ansible_distribution == "CentOS"
 
  
