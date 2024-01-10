@@ -1,0 +1,13 @@
+- name: install mariadb package for Red Hat Servers
+  tags: fedora,db,mariadb
+  dnf:
+    name: mariadb
+    state: latest
+  when: ansible_distribution in ["CentOS", "Fedora"]
+
+- name: install mariadb package for Debian Servers
+  tags: db,mariadb,ubuntu
+  apt:
+    name: mariadb-server
+    state: latest
+  when: ansible_distribution in ["Debian", "Ubuntu"]
