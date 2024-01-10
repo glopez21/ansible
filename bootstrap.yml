@@ -1,0 +1,47 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (RedHat Servers)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution in ["CentOS", "Fedora"]
+
+  - name: install updates (Debian Servers)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create sim0ne user
+    tags: always
+    user:
+      name: sim0ne
+      groups: root
+
+  - name: add ssh key for sim0ne
+    tags: always
+    authorized_key:
+      user: sim0ne
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOW97fiDI4P0K7K9pwfj8PMzJmHPxByiOEDiY0kvad2j ansible"
+  
+  - name: add sudoers file for sim0ne
+    tags: always
+    copy:
+      src: sudoer_sim0ne
+      dest: /etc/sudoers.d/sim0ne
+      owner: root
+      group: root
+      mode: 0400
+
+  
